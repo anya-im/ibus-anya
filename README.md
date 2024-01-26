@@ -1,10 +1,10 @@
-# ibus-egoisticlily
-This project join Input Method IBus and kanakanji converter EgoisticLily.<br>
+# ibus-anya
+This project join Input Method IBus and kanakanji converter Anya.<br>
 Caution: State is sample. Do not production use.
 
 # Requirement
 * IBus
-* [EgoisticLilyPy][1]
+* [[anya-grpc](https://github.com/anya-im/anya-grpc)]
 * autotools
 * python3
 
@@ -18,11 +18,10 @@ Caution: State is sample. Do not production use.
     * <<data dir>> ibus and glib-2.0 parent path. In openSUSE it is /usr/share. Default is /usr/local/share.
 
 ## Use
-Restart ibus. and add [EgoisticLily] in [設定] - [入力メソッド] - [追加] - [日本語].<br>
-Then [日本語 - EgoisticLily] is shown in list of IBus. Select it.<br>
+Restart ibus. and add [[Anya](https://github.com/anya-im/anya-grpc)] in [[設定](https://github.com/anya-im/anya-grpc)] - [入力メソッド] - [追加] - [日本語].<br>
+Then [日本語 - [Anya](https://github.com/anya-im/anya-grpc)] is shown in list of IBus. Select it.<br>
 
 ## Convert
 Select [Input mode] - [Hiragana].<br>
 Input any key and press [SPACE].
 
-[1]:https://github.com/E-Lily/EgoisticLilyPy
