@@ -16,4 +16,16 @@
 	  <path>@PACKAGE_DIR@/config/egoisticlily/default.xml</path>
 	</observed-paths>
 	<engines exec="@PACKAGE_DIR@/src/ibus-engine-egoisticlily --xml" />
+
+	<engines>
+		<engine>
+			<name>anya</name>
+			<language>ja</language>
+			<author>Hashimoto Masahiko &lt;hashimom@geeko.jp&gt;</author>
+			<layout>jp</layout>
+			<longname>ANYA</longname>
+			<description>ANYA Input Method</description>
+			<rank>0</rank>
+		</engine>
+	</engines>
 </component>
