@@ -1,7 +1,7 @@
 # -*- coding: utf-8 -*-
 # vim:set et sts=4 sw=4:
 #
-# ibus-egoisticlily - The EgoisticLily engine for IBus
+# ibus-anya - The Anya engine for IBus
 #
 # Copyright (c) 2019 Syuta Hashimoto <syuta.hashimoto@gmail.com>
 #
@@ -37,14 +37,14 @@ from prefs import Prefs
 
 N_ = lambda a : a
 
-__all__ = ['EgoisticLilyPrefs']
+__all__ = ['AnyaPrefs']
 
 
-class EgoisticLilyPrefs(Prefs):
+class AnyaPrefs(Prefs):
     _char_to_config_key = None
 
     def __init__(self):
-        super(EgoisticLilyPrefs, self).__init__()
+        super(AnyaPrefs, self).__init__()
 
     def get_japanese_ordered_list(self):
         return _japanese_ordered_list
@@ -95,7 +95,7 @@ class EgoisticLilyPrefs(Prefs):
         return retval
 
     def get_value(self, section, key):
-        not_sorted = super(EgoisticLilyPrefs, self).get_value(section, key)
+        not_sorted = super(AnyaPrefs, self).get_value(section, key)
         if section == 'shortcut' and type(not_sorted) == dict:
             retval = dict.fromkeys(_cmd_keys, [])
             retval.update(not_sorted)
@@ -176,7 +176,7 @@ _japanese_ordered_list = [
 
 # http://git.gnome.org/browse/glib/tree/gio/glib-compile-schemas.c#n765
 # gsettings supports keys named by "abcdefghijklmnopqrstuvwxyz0123456789-"
-# and ibus-egoisticlily uses '-' as the delimiter.
+# and ibus-anya uses '-' as the delimiter.
 _supported_gsettings_key_chars = "abcdefghijklmnopqrstuvwxyz0123456789"
 
 _config_key_to_char = {

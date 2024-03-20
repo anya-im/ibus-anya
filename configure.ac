@@ -8,12 +8,12 @@ AM_INIT_AUTOMAKE
 PACKAGE_DIR=`pwd`
 AC_SUBST(PACKAGE_DIR)
 
-AC_ARG_WITH(egoisticlily-model,
-	[AC_HELP_STRING([--with-egoisticlily-model=PATH],
-			[file path of egoisticlily model])],
-	[EGOISTICLILY_MODEL_DIR="$withval"],
-	[EGOISTICLILY_MODEL_DIR="`pwd`/model"])
-AC_SUBST(EGOISTICLILY_MODEL_DIR)	
+AC_ARG_WITH(anya-model,
+	[AC_HELP_STRING([--with-anya-model=PATH],
+			[file path of anya model])],
+	[ANYA_MODEL_DIR="$withval"],
+	[ANYA_MODEL_DIR="`pwd`/model"])
+AC_SUBST(ANYA_MODEL_DIR)	
 
 
 AC_CONFIG_FILES([
@@ -23,14 +23,14 @@ src/main.py
 src/engine.py
 src/factory.py
 config/Makefile
-config/egoisticlily/Makefile
+config/anya/Makefile
 config/gschema/Makefile
 config/ibusengines/Makefile
-config/ibusengines/egoisticlily.xml
+config/ibusengines/anya.xml
 ])
 
 AC_CONFIG_FILES(
-[src/ibus-engine-egoisticlily],
-[chmod +x src/ibus-engine-egoisticlily])
+[src/ibus-engine-anya],
+[chmod +x src/ibus-engine-anya])
 
 AC_OUTPUT

@@ -1,7 +1,7 @@
 # -*- coding: utf-8 -*-
 # vim:set et sts=4 sw=4:
 #
-# ibus-egoisticlily - The EgoisticLily engine for IBus
+# ibus-anya - The Anya engine for IBus
 #
 # Copyright (c) 2019 Syuta Hashimoto <syuta.hashimoto@gmail.com>
 #
@@ -64,10 +64,10 @@ import jastring
 from segment import unichar_half_to_full
 
 #sys.path.append(path.join(config.PKGDATADIR, 'setup'))
-from egoisticlilyprefs import EgoisticLilyPrefs
+from anyaprefs import AnyaPrefs
 
 '''
-_  = lambda a : dgettext('ibus-egoisticlily', a)
+_  = lambda a : dgettext('ibus-anya', a)
 N_ = lambda a : a
 UN = lambda a : unicode(a, 'utf-8')
 '''
@@ -80,7 +80,7 @@ INPUT_MODE_LATIN, \
 INPUT_MODE_WIDE_LATIN = list(range(5))
 
 CONV_MODE_OFF, \
-CONV_MODE_EGOISTICLILY, \
+CONV_MODE_ANYA, \
 CONV_MODE_HIRAGANA, \
 CONV_MODE_KATAKANA, \
 CONV_MODE_HALF_WIDTH_KATAKANA, \
@@ -137,7 +137,7 @@ class Engine(IBus.EngineSimple):
     __latin_with_shift = True
 
     def __init__(self, bus, object_path):
-        super(Engine, self).__init__(engine_name="egoisticlily",
+        super(Engine, self).__init__(engine_name="anya",
                                      connection=bus.get_connection(),
                                      object_path=object_path)
 
@@ -223,25 +223,25 @@ class Engine(IBus.EngineSimple):
             self.__idle_id = 0
 
     def __init_props(self):
-        egoisticlily_props = IBus.PropList()
+        anya_props = IBus.PropList()
 
-        self.__set_input_mode_props(egoisticlily_props)
-        self.__set_typing_method_props(egoisticlily_props)
-        self.__set_segment_mode_props(egoisticlily_props)
-        self.__set_dict_mode_props(egoisticlily_props)
-        self.__set_dict_config_props(egoisticlily_props)
+        self.__set_input_mode_props(anya_props)
+        self.__set_typing_method_props(anya_props)
+        self.__set_segment_mode_props(anya_props)
+        self.__set_dict_mode_props(anya_props)
+        self.__set_dict_config_props(anya_props)
 
         if not self.__prefs.get_value('common', 'show-preferences'):
-            return egoisticlily_props
+            return anya_props
 
-        egoisticlily_props.append(IBus.Property(key='setup',
-                                         label=IBus.Text.new_from_string(_("Preferences - EgoisticLily")),
+        anya_props.append(IBus.Property(key='setup',
+                                         label=IBus.Text.new_from_string(_("Preferences - Anya")),
                                          icon="@PACKAGE_DIR@/src/tool.png",
-                                         tooltip=IBus.Text.new_from_string(_("Configure EgoisticLily")),
+                                         tooltip=IBus.Text.new_from_string(_("Configure Anya")),
                                          sensitive=True,
                                          visible=True))
 
-        return egoisticlily_props
+        return anya_props
 
     def __init_signal(self):
         signal.signal(signal.SIGHUP, self.__signal_cb)
@@ -255,7 +255,7 @@ class Engine(IBus.EngineSimple):
         signal.signal(signum, signal.SIG_DFL)
         os.kill(os.getpid(), signum)
 
-    def __set_input_mode_props(self, egoisticlily_props):
+    def __set_input_mode_props(self, anya_props):
         # The class method is kept even if the engine is switched.
         if Engine.__input_mode == None:
             # The config value is readonly for initial engine and
@@ -345,14 +345,14 @@ class Engine(IBus.EngineSimple):
             i += 1
 
         input_mode_prop.set_sub_props(props)
-        egoisticlily_props.append(input_mode_prop)
+        anya_props.append(input_mode_prop)
 
         mode = Engine.__input_mode
         mode = 'InputMode.' + ['Hiragana', 'Katakana', 'HalfWidthKatakana',
                                'Latin', 'WideLatin'][mode]
         self.__input_mode_activate(mode, IBus.PropState.CHECKED)
 
-    def __set_typing_method_props(self, egoisticlily_props):
+    def __set_typing_method_props(self, anya_props):
         if Engine.__typing_mode == None:
             Engine.__typing_mode = jastring.TYPING_MODE_ROMAJI
             Engine.__typing_mode = self.__prefs.get_value('common',
@@ -414,13 +414,13 @@ class Engine(IBus.EngineSimple):
             i += 1
 
         typing_mode_prop.set_sub_props(props)
-        egoisticlily_props.append(typing_mode_prop)
+        anya_props.append(typing_mode_prop)
 
         mode = Engine.__typing_mode
         mode = 'TypingMode.' + ['Romaji', 'Kana', 'ThumbShift'][mode]
         self.__typing_mode_activate(mode, IBus.PropState.CHECKED)
 
-    def __set_segment_mode_props(self, egoisticlily_props):
+    def __set_segment_mode_props(self, anya_props):
         if Engine.__segment_mode == None:
             Engine.__segment_mode = SEGMENT_DEFAULT
             Engine.__segment_mode = self.__prefs.get_value('common',
@@ -491,14 +491,14 @@ class Engine(IBus.EngineSimple):
             i += 1
 
         segment_mode_prop.set_sub_props(props)
-        egoisticlily_props.append(segment_mode_prop)
+        anya_props.append(segment_mode_prop)
 
         mode = Engine.__segment_mode
         mode = 'SegmentMode.' + ['Multi', 'Single',
                                  'ImmediateMulti', 'ImmediateSingle'][mode]
         self.__segment_mode_activate(mode, IBus.PropState.CHECKED)
 
-    def __set_dict_mode_props(self, egoisticlily_props, update_prop=False):
+    def __set_dict_mode_props(self, anya_props, update_prop=False):
         if Engine.__dict_mode == None:
             Engine.__dict_mode = 0
 
@@ -584,9 +584,9 @@ class Engine(IBus.EngineSimple):
         if update_prop:
             # focus-in event will call register_properties().
             # Need to switch another IME to update menus on GtkStatusIcon?
-            egoisticlily_props.update_property(dict_mode_prop)
+            anya_props.update_property(dict_mode_prop)
         else:
-            egoisticlily_props.append(dict_mode_prop)
+            anya_props.append(dict_mode_prop)
 
         prop_name = self.__dict_mode_get_prop_name(Engine.__dict_mode)
         if prop_name == None:
@@ -594,7 +594,7 @@ class Engine(IBus.EngineSimple):
         self.__dict_mode_activate(prop_name,
                                   IBus.PropState.CHECKED)
 
-    def __set_dict_config_props(self, egoisticlily_props):
+    def __set_dict_config_props(self, anya_props):
         if not self.__prefs.get_value('common', 'show-dict-config'):
             return
 
@@ -603,7 +603,7 @@ class Engine(IBus.EngineSimple):
 
         if not path.exists(admin_command[0]):
             return
-        label = _("Dictionary - Egoisticlily")
+        label = _("Dictionary - Anya")
         if icon_path and path.exists(icon_path):
             icon = icon_path
         else:
@@ -649,7 +649,7 @@ class Engine(IBus.EngineSimple):
             i += 1
 
         dict_prop.set_sub_props(props)
-        egoisticlily_props.append(dict_prop)
+        anya_props.append(dict_prop)
 
     def __get_clipboard(self, clipboard, text, data):
         print("__get_clipboard")
@@ -725,7 +725,7 @@ class Engine(IBus.EngineSimple):
     def __page_up(self, obj):
         print("__page_up")
         # only process cursor down in convert mode
-        if self.__convert_mode != CONV_MODE_EGOISTICLILY:
+        if self.__convert_mode != CONV_MODE_ANYA:
             return False
 
         if not self.__lookup_table.page_up():
@@ -740,7 +740,7 @@ class Engine(IBus.EngineSimple):
     def __page_down(self, obj):
         print("__page_down")
         # only process cursor down in convert mode
-        if self.__convert_mode != CONV_MODE_EGOISTICLILY:
+        if self.__convert_mode != CONV_MODE_ANYA:
             return False
 
         if not self.__lookup_table.page_down():
@@ -754,8 +754,8 @@ class Engine(IBus.EngineSimple):
 
     def do_cursor_up(self):
         # only process cursor down in convert mode
-        # if self.__convert_mode != CONV_MODE_EGOISTICLILY:
-        if self.__convert_mode != CONV_MODE_EGOISTICLILY and self.__convert_mode != CONV_MODE_PREDICTION:
+        # if self.__convert_mode != CONV_MODE_ANYA:
+        if self.__convert_mode != CONV_MODE_ANYA and self.__convert_mode != CONV_MODE_PREDICTION:
             return False
 
         if not self.__lookup_table.cursor_up():
@@ -769,8 +769,8 @@ class Engine(IBus.EngineSimple):
 
     def do_cursor_down(self):
         # only process cursor down in convert mode
-        # if self.__convert_mode != CONV_MODE_EGOISTICLILY:
-        if self.__convert_mode != CONV_MODE_EGOISTICLILY and self.__convert_mode != CONV_MODE_PREDICTION:
+        # if self.__convert_mode != CONV_MODE_ANYA:
+        if self.__convert_mode != CONV_MODE_ANYA and self.__convert_mode != CONV_MODE_PREDICTION:
             return False
 
         if not self.__lookup_table.cursor_down():
@@ -873,7 +873,7 @@ class Engine(IBus.EngineSimple):
         mode, symbol = input_modes[prop_name]
         if 'InputMode' not in self.__prop_dict.keys():
             print("'InputMode' not in self.__prop_dict.keys()")
-            # Disable to show input mode with ibus-set-EGOISTICLILY
+            # Disable to show input mode with ibus-set-ANYA
             Engine.__input_mode = mode
             return
 
@@ -893,7 +893,7 @@ class Engine(IBus.EngineSimple):
 
     def __typing_mode_activate(self, prop_name, state):
         if 'TypingMode' not in self.__prop_dict.keys():
-            # Disable to show typing mode with ibus-set-EGOISTICLILY
+            # Disable to show typing mode with ibus-set-ANYA
             return
         typing_modes = {
             'TypingMode.Romaji' : (jastring.TYPING_MODE_ROMAJI, 'R'),
@@ -924,7 +924,7 @@ class Engine(IBus.EngineSimple):
 
     def __refresh_typing_mode_property(self):
         if 'TypingMode' not in self.__prop_dict:
-            # Disable to show typing mode with ibus-set-EGOISTICLILY
+            # Disable to show typing mode with ibus-set-ANYA
             return
         prop = self.__prop_dict['TypingMode']
         modes = {
@@ -946,7 +946,7 @@ class Engine(IBus.EngineSimple):
 
     def __segment_mode_activate(self, prop_name, state):
         if 'SegmentMode' not in self.__prop_dict.keys():
-            # Disable to show segment mode with ibus-set-EGOISTICLILY
+            # Disable to show segment mode with ibus-set-ANYA
             return
         segment_modes = {
             'SegmentMode.Multi' : (SEGMENT_DEFAULT, '連'),
@@ -1103,13 +1103,13 @@ class Engine(IBus.EngineSimple):
         return preedit
 
     # begine convert
-    def __begin_egoisticlily_convert(self):
-        print("__begin_egoisticlily_convert")
+    def __begin_anya_convert(self):
+        print("__begin_anya_convert")
         if Engine.__segment_mode & SEGMENT_IMMEDIATE:
-            self.__end_egoisticlily_convert()
-        if self.__convert_mode == CONV_MODE_EGOISTICLILY:
+            self.__end_anya_convert()
+        if self.__convert_mode == CONV_MODE_ANYA:
             return
-        self.__convert_mode = CONV_MODE_EGOISTICLILY
+        self.__convert_mode = CONV_MODE_ANYA
 
 #        text, cursor = self.__preedit_ja_string.get_hiragana()
         text, cursor = self.__preedit_ja_string.get_hiragana(True)
@@ -1132,8 +1132,8 @@ class Engine(IBus.EngineSimple):
         self.__fill_lookup_table()
         self.__lookup_table_visible = False
 
-    def __end_egoisticlily_convert(self):
-        print("__end_egoisticlily_convert")
+    def __end_anya_convert(self):
+        print("__end_anya_convert")
         if self.__convert_mode == CONV_MODE_OFF:
             return
 
@@ -1145,7 +1145,7 @@ class Engine(IBus.EngineSimple):
         self.__lookup_table_visible = False
 
     def __end_convert(self):
-        self.__end_egoisticlily_convert()
+        self.__end_anya_convert()
 
     # test case 'verudhi' can show U+3046 + U+309B and U+3094
     def __candidate_cb(self, candidate):
@@ -1223,9 +1223,9 @@ class Engine(IBus.EngineSimple):
 
     def __update_convert_chars(self):
         print("__update_convert_chars")
-#        if self.__convert_mode == CONV_MODE_EGOISTICLILY:
-        if self.__convert_mode == CONV_MODE_EGOISTICLILY or self.__convert_mode == CONV_MODE_PREDICTION:
-            self.__update_egoisticlily_convert_chars()
+#        if self.__convert_mode == CONV_MODE_ANYA:
+        if self.__convert_mode == CONV_MODE_ANYA or self.__convert_mode == CONV_MODE_PREDICTION:
+            self.__update_anya_convert_chars()
             return
         if self.__convert_mode == CONV_MODE_HIRAGANA:
 #            text, cursor = self.__preedit_ja_string.get_hiragana()
@@ -1277,7 +1277,7 @@ class Engine(IBus.EngineSimple):
         self.update_lookup_table(self.__lookup_table,
             self.__lookup_table_visible)
 
-    def __update_egoisticlily_convert_chars(self):
+    def __update_anya_convert_chars(self):
         self.__convert_chars = ''
         pos = 0
         for i, (seg_index, text) in enumerate(self.__segments):
@@ -1314,7 +1314,7 @@ class Engine(IBus.EngineSimple):
 #            text, cursor = self.__get_preedit()
             text, cursor = self.__get_preedit(True)
             self.__commit_string(text)
-        elif self.__convert_mode == CONV_MODE_EGOISTICLILY:
+        elif self.__convert_mode == CONV_MODE_ANYA:
             for i, (seg_index, text) in enumerate(self.__segments):
                 self.__context.commit_segment(i, seg_index)
             self.__commit_string(self.__convert_chars)
@@ -1358,7 +1358,7 @@ class Engine(IBus.EngineSimple):
                 # we also should be able to add a char in the active segment.
                 # Currently plain preedit, no segment mode, i.e.
                 # using self.__preedit_ja_string, can delete or add a char
-                # but egoisticlily active segoment mode, i.e.
+                # but anya active segoment mode, i.e.
                 # using self.__segments, can not delete or add a char.
                 # Deleting a char could be easy here but adding a char is
                 # difficult because we need to update both self.__segments
@@ -1382,7 +1382,7 @@ class Engine(IBus.EngineSimple):
                 if all_text == '':
                     return
 
-                # Set self.__preedit_ja_string by egoisticlily context.
+                # Set self.__preedit_ja_string by anya context.
                 self.__preedit_ja_string = jastring.JaString(Engine.__typing_mode,
                                                              self.__latin_with_shift)
                 self.__convert_chars = self.__normalize_preedit(all_text)
@@ -1432,8 +1432,8 @@ class Engine(IBus.EngineSimple):
         return True
 
     '''def __on_key_hiragana_katakana(self):
-        if self.__convert_mode == CONV_MODE_EGOISTICLILY:
-            self.__end_egoisticlily_convert()
+        if self.__convert_mode == CONV_MODE_ANYA:
+            self.__end_anya_convert()
 
         if Engine.__input_mode >= INPUT_MODE_HIRAGANA and \
            Engine.__input_mode < INPUT_MODE_HALF_WIDTH_KATAKANA:
@@ -1457,8 +1457,8 @@ class Engine(IBus.EngineSimple):
         if self.__preedit_ja_string.is_empty():
             return False
 
-        if self.__convert_mode == CONV_MODE_EGOISTICLILY:
-            self.__end_egoisticlily_convert()
+        if self.__convert_mode == CONV_MODE_ANYA:
+            self.__end_anya_convert()
 
         new_mode = CONV_MODE_HIRAGANA
         if self.__convert_mode < CONV_MODE_WIDE_LATIN_3 and \
@@ -1474,10 +1474,10 @@ class Engine(IBus.EngineSimple):
     '''def __on_key_henkan(self):
         if self.__preedit_ja_string.is_empty():
             return False
-        if self.__convert_mode != CONV_MODE_EGOISTICLILY:
-            self.__begin_egoisticlily_convert()
+        if self.__convert_mode != CONV_MODE_ANYA:
+            self.__begin_anya_convert()
             self.__invalidate()
-        elif self.__convert_mode == CONV_MODE_EGOISTICLILY:
+        elif self.__convert_mode == CONV_MODE_ANYA:
             self.__lookup_table_visible = True
             self.do_cursor_down()
         return True'''
@@ -1500,10 +1500,10 @@ class Engine(IBus.EngineSimple):
                 self.__commit_string(chr(IBus.KEY_space))
                 return True
 
-        if self.__convert_mode != CONV_MODE_EGOISTICLILY:
-            self.__begin_egoisticlily_convert()
+        if self.__convert_mode != CONV_MODE_ANYA:
+            self.__begin_anya_convert()
             self.__invalidate()
-        elif self.__convert_mode == CONV_MODE_EGOISTICLILY:
+        elif self.__convert_mode == CONV_MODE_ANYA:
             self.__lookup_table_visible = True
             self.do_cursor_down()
         return True'''
@@ -1545,7 +1545,7 @@ class Engine(IBus.EngineSimple):
             self.__invalidate()
             return True
 
-        if self.__convert_mode != CONV_MODE_EGOISTICLILY:
+        if self.__convert_mode != CONV_MODE_ANYA:
             return True
 
         if self.__cursor_pos == 0:
@@ -1565,7 +1565,7 @@ class Engine(IBus.EngineSimple):
             self.__invalidate()
             return True
 
-        if self.__convert_mode != CONV_MODE_EGOISTICLILY:
+        if self.__convert_mode != CONV_MODE_ANYA:
             return True
 
         if self.__cursor_pos + 1 >= len(self.__segments):
@@ -1578,7 +1578,7 @@ class Engine(IBus.EngineSimple):
         return True
 
     def __on_key_number(self, keyval):
-        if self.__convert_mode != CONV_MODE_EGOISTICLILY:
+        if self.__convert_mode != CONV_MODE_ANYA:
             return False
         if not self.__lookup_table_visible:
             return False
@@ -1594,8 +1594,8 @@ class Engine(IBus.EngineSimple):
         if self.__preedit_ja_string.is_empty():
             return False
 
-        if self.__convert_mode == CONV_MODE_EGOISTICLILY:
-            self.__end_egoisticlily_convert()
+        if self.__convert_mode == CONV_MODE_ANYA:
+            self.__end_anya_convert()
 
         if mode == 0 or mode == 1:
             if self.__convert_mode == CONV_MODE_HIRAGANA + mode:
@@ -1629,7 +1629,7 @@ class Engine(IBus.EngineSimple):
         print("__on_key_common")
 
         # If use-system-layout is FALSE in ibus 1.4.y or lower,
-        # ibus converts the keymap and ibus-egoisticlily needed to use
+        # ibus converts the keymap and ibus-anya needed to use
         # self.__commit_string
         # ibus 1.5.y uses XKB directly so Latin mode can return FALSE.
         if Engine.__input_mode == INPUT_MODE_LATIN:
@@ -1651,8 +1651,8 @@ class Engine(IBus.EngineSimple):
             print("Engine.__segment_mode & SEGMENT_IMMEDIATE: pass")
             # Commit nothing
             pass
-        elif self.__convert_mode == CONV_MODE_EGOISTICLILY:
-            print("self.__convert_mode == CONV_MODE_EGOISTICLILY:")
+        elif self.__convert_mode == CONV_MODE_ANYA:
+            print("self.__convert_mode == CONV_MODE_ANYA:")
             for i, (seg_index, text) in enumerate(self.__segments):
                 self.__context.commit_segment(i, seg_index)
             self.__commit_string(self.__convert_chars)
@@ -1672,7 +1672,7 @@ class Engine(IBus.EngineSimple):
         self.__preedit_ja_string.insert(chr(keyval))
         if Engine.__segment_mode & SEGMENT_IMMEDIATE:
             print("Engine.__segment_mode & SEGMENT_IMMEDIATE:")
-            self.__begin_egoisticlily_convert()
+            self.__begin_anya_convert()
         self.__invalidate()
         return True
 
@@ -1683,7 +1683,7 @@ class Engine(IBus.EngineSimple):
             print('RELOADED')
         if not cls.__prefs:
             print('NOT CLS.__PREFS')
-            cls.__prefs = EgoisticLilyPrefs()
+            cls.__prefs = AnyaPrefs()
             cls.__prefs.connect('changed', cls.CONFIG_VALUE_CHANGED)
             cls._init_prefs()
 
@@ -1998,7 +1998,7 @@ class Engine(IBus.EngineSimple):
         if self.__convert_mode == CONV_MODE_OFF:
             if '1' in mode and not self.__preedit_ja_string.is_empty():
                 return True
-        elif self.__convert_mode == CONV_MODE_EGOISTICLILY:
+        elif self.__convert_mode == CONV_MODE_ANYA:
             if '2' in mode and not self.__lookup_table_visible:
                 return True
         elif self.__convert_mode == CONV_MODE_PREDICTION:
@@ -2043,10 +2043,10 @@ class Engine(IBus.EngineSimple):
         if id == None:
             return
         if link_mode == LINK_DICT_EMBEDDED:
-            directory = EGOISTICLILY_CONFIG_PATH + '/' + IMPORTED_EMBEDDED_DICT_DIR
+            directory = ANYA_CONFIG_PATH + '/' + IMPORTED_EMBEDDED_DICT_DIR
             name = IMPORTED_EMBEDDED_DICT_PREFIX + id
         elif link_mode == LINK_DICT_SINGLE:
-            directory = EGOISTICLILY_CONFIG_PATH
+            directory = ANYA_CONFIG_PATH
             name = IMPORTED_SINGLE_DICT_PREFIX + id
         else:
             return
@@ -2074,10 +2074,10 @@ class Engine(IBus.EngineSimple):
         if id == None:
             return
         if link_mode == LINK_DICT_EMBEDDED:
-            directory = EGOISTICLILY_CONFIG_PATH + '/' + IMPORTED_EMBEDDED_DICT_DIR
+            directory = ANYA_CONFIG_PATH + '/' + IMPORTED_EMBEDDED_DICT_DIR
             name = IMPORTED_EMBEDDED_DICT_PREFIX + id
         elif link_mode == LINK_DICT_SINGLE:
-            directory = EGOISTICLILY_CONFIG_PATH
+            directory = ANYA_CONFIG_PATH
             name = IMPORTED_SINGLE_DICT_PREFIX + id
         else:
             return
@@ -2300,7 +2300,7 @@ class Engine(IBus.EngineSimple):
             print("return False ||| not self._chk_mode('14'):")
             return False
 
-        self.__begin_egoisticlily_convert()
+        self.__begin_anya_convert()
         self.__invalidate()
 
         return True
@@ -2352,7 +2352,7 @@ class Engine(IBus.EngineSimple):
             return False
 
         # Move importing Gtk into Engine from the header
-        # because ibus-engine-egoisticlily --xml does not requre to open X.
+        # because ibus-engine-anya --xml does not requre to open X.
         try:
             from gi.repository import Gtk
             clipboard_get = Gtk.Clipboard.get
@@ -2390,7 +2390,7 @@ class Engine(IBus.EngineSimple):
             text = buf
             self.__segments.append((0, text))
 
-        self.__convert_mode = CONV_MODE_EGOISTICLILY
+        self.__convert_mode = CONV_MODE_ANYA
         self.__cursor_pos = 0
         self.__fill_lookup_table()
         self.__lookup_table_visible = False
@@ -2461,7 +2461,7 @@ class Engine(IBus.EngineSimple):
         if not self._chk_mode('25'):
             return False
 
-        if self.__convert_mode == CONV_MODE_EGOISTICLILY:
+        if self.__convert_mode == CONV_MODE_ANYA:
             self.__shrink_segment(-1)
             return True
 
@@ -2469,7 +2469,7 @@ class Engine(IBus.EngineSimple):
         if not self._chk_mode('25'):
             return False
 
-        if self.__convert_mode == CONV_MODE_EGOISTICLILY:
+        if self.__convert_mode == CONV_MODE_ANYA:
             self.__shrink_segment(1)
             return True
 
@@ -2488,7 +2488,7 @@ class Engine(IBus.EngineSimple):
         if commit_index >= len(self.__segments):
             return False
 
-        if self.__convert_mode == CONV_MODE_EGOISTICLILY:
+        if self.__convert_mode == CONV_MODE_ANYA:
             for i in range(0, commit_index + 1):
                 (seg_index, text) = self.__segments[i]
                 self.commit_text(IBus.Text.new_from_string(text))
@@ -2624,7 +2624,7 @@ class Engine(IBus.EngineSimple):
 
     #convert_keys
     def __cmd_convert_to_char_type_forward(self, keyval, state):
-        if self.__convert_mode == CONV_MODE_EGOISTICLILY:
+        if self.__convert_mode == CONV_MODE_ANYA:
             n = self.__segments[self.__cursor_pos][0]
             if n == NTH_HIRAGANA_CANDIDATE:
                 return self.__convert_segment_to_kana(NTH_KATAKANA_CANDIDATE)
@@ -2650,7 +2650,7 @@ class Engine(IBus.EngineSimple):
             return self.__cmd_convert_to_katakana(keyval, state)
 
     def __cmd_convert_to_char_type_backward(self, keyval, state):
-        if self.__convert_mode == CONV_MODE_EGOISTICLILY:
+        if self.__convert_mode == CONV_MODE_ANYA:
             n = self.__segments[self.__cursor_pos][0]
             if n == NTH_KATAKANA_CANDIDATE:
                 return self.__convert_segment_to_kana(NTH_HIRAGANA_CANDIDATE)
@@ -2676,7 +2676,7 @@ class Engine(IBus.EngineSimple):
             return self.__cmd_convert_to_wide_latin(keyval, state)
 
     def __convert_segment_to_kana(self, n):
-        if self.__convert_mode == CONV_MODE_EGOISTICLILY and -4 <= n <= -2:
+        if self.__convert_mode == CONV_MODE_ANYA and -4 <= n <= -2:
             buf = self.__context.get_segment(self.__cursor_pos, n)
             self.__segments[self.__cursor_pos] = n, buf
             self.__lookup_table_visible = False
@@ -2689,7 +2689,7 @@ class Engine(IBus.EngineSimple):
         if not self._chk_mode('12345'):
             return False
 
-        if self.__convert_mode == CONV_MODE_EGOISTICLILY:
+        if self.__convert_mode == CONV_MODE_ANYA:
             if mode == 1:
                 self.__cmd_move_caret_first(keyval, state)
                 self.__shrink_segment_end()
@@ -2701,7 +2701,7 @@ class Engine(IBus.EngineSimple):
         if not self._chk_mode('12345'):
             return False
 
-        if self.__convert_mode == CONV_MODE_EGOISTICLILY:
+        if self.__convert_mode == CONV_MODE_ANYA:
             if mode == 1:
                 self.__cmd_move_caret_first(keyval, state)
                 self.__shrink_segment_end()
@@ -2713,7 +2713,7 @@ class Engine(IBus.EngineSimple):
         if not self._chk_mode('12345'):
             return False
 
-        if self.__convert_mode == CONV_MODE_EGOISTICLILY:
+        if self.__convert_mode == CONV_MODE_ANYA:
             i, s = self.__segments[self.__cursor_pos]
             if i == -101:
                 return self.__convert_segment_to_latin(-100)
@@ -2734,7 +2734,7 @@ class Engine(IBus.EngineSimple):
         if not self._chk_mode('12345'):
             return False
 
-        if self.__convert_mode == CONV_MODE_EGOISTICLILY:
+        if self.__convert_mode == CONV_MODE_ANYA:
             if mode == 1:
                 self.__cmd_move_caret_first(keyval, state)
                 self.__shrink_segment_end()
@@ -2743,7 +2743,7 @@ class Engine(IBus.EngineSimple):
         return self.__on_key_conv(2)
 
     def __convert_segment_to_latin(self, n):
-        if self.__convert_mode == CONV_MODE_EGOISTICLILY and n in [-100, -101]:
+        if self.__convert_mode == CONV_MODE_ANYA and n in [-100, -101]:
             start = 0
             for i in range(self.__cursor_pos):
                 start += len(self.__context.get_segment(i, NTH_UNCONVERTED_CANDIDATE))
@@ -2770,7 +2770,7 @@ class Engine(IBus.EngineSimple):
         if not self._chk_mode('12345'):
             return False
 
-        if self.__convert_mode == CONV_MODE_EGOISTICLILY:
+        if self.__convert_mode == CONV_MODE_ANYA:
             if mode == 1:
                 self.__cmd_move_caret_first(keyval, state)
                 self.__shrink_segment_end()
@@ -2782,7 +2782,7 @@ class Engine(IBus.EngineSimple):
         if not self._chk_mode('12345'):
             return False
 
-        if self.__convert_mode == CONV_MODE_EGOISTICLILY:
+        if self.__convert_mode == CONV_MODE_ANYA:
             if mode == 1:
                 self.__cmd_move_caret_first(keyval, state)
                 self.__shrink_segment_end()
@@ -2862,8 +2862,8 @@ class Engine(IBus.EngineSimple):
             if pid != Engine.__setup_pid:
                 return
             Engine.__setup_pid = 0
-        setup_cmd = path.join(config.LIBEXECDIR, 'ibus-setup-egoisticlily')
-        Engine.__setup_pid = os.spawnl(os.P_NOWAIT, setup_cmd, 'ibus-setup-egoisticlily<')
+        setup_cmd = path.join(config.LIBEXECDIR, 'ibus-setup-anya')
+        Engine.__setup_pid = os.spawnl(os.P_NOWAIT, setup_cmd, 'ibus-setup-anya<')
 
     def __cmd_hiragana_for_latin_with_shift(self, keyval, state):
         self.__preedit_ja_string.set_hiragana_katakana(True)

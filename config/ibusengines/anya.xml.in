@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!-- filename: anya.xml -->
+<component>
+	<name>org.freedesktop.IBus.Anya</name>
+	<description>Anya Component</description>
+	<exec>@PACKAGE_DIR@/src/ibus-engine-anya --ibus</exec>
+	<version>0.0.1</version>
+	<author>Hashimoto Masahiko</author>
+	<license>MIT</license>
+	<homepage>https://github.com/hashimom/Anya</homepage>
+	<textdomain>ibus-anya</textdomain>
+
+	<!-- for engines -->
+	<observed-paths>
+	  <path>@PACKAGE_DIR@/config/anya/engines.xml</path>
+	  <path>@PACKAGE_DIR@/config/anya/default.xml</path>
+	</observed-paths>
+	<engines exec="@PACKAGE_DIR@/src/ibus-engine-anya --xml" />
+</component>

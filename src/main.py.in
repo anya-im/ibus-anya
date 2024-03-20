@@ -1,7 +1,7 @@
 # -*- coding: utf-8 -*-
 # vim:set et sts=4 sw=4:
 #
-# ibus-egoisticlily - The EgoisticLily engine for IBus
+# ibus-anya - The Anya engine for IBus
 #
 # Copyright (c) 2019 Syuta Hashimoto <syuta.hashimoto@gmail.com>
 #
@@ -45,7 +45,7 @@ from gi.repository import GLib
 
 # set_prgname before importing factory to show the name in warning
 # messages when import modules are failed. E.g. Gtk.
-GLib.set_prgname('ibus-engine-egoisticlily')
+GLib.set_prgname('ibus-engine-anya')
 
 from gi.repository import IBus
 
@@ -54,22 +54,22 @@ import factory
 
 class IMApp:
     def __init__(self, exec_by_ibus):
-        command_line = '@PACKAGE_DIR@ibus-engine-egoisticlily --ibus'
-        self.__component = IBus.Component(name='org.freedesktop.IBus.EgoisticLily',
-                                          description='EgoisticLily Component',
+        command_line = '@PACKAGE_DIR@ibus-engine-anya --ibus'
+        self.__component = IBus.Component(name='org.freedesktop.IBus.Anya',
+                                          description='Anya Component',
                                           version='0.0.1',
                                           license='MIT',
                                           author='Syuta Hashimoto <syuta.hashimoto@gmail.com>',
                                           homepage='https://github.com/syutadeveloper',
                                           command_line=command_line,
-                                          textdomain='ibus-egoisticlily')
-        engine = IBus.EngineDesc(name='egoisticlily',
-                                 longname='EgoisticLily',
-                                 description='EgoisticLily Input Method',
+                                          textdomain='ibus-anya')
+        engine = IBus.EngineDesc(name='anya',
+                                 longname='Anya',
+                                 description='Anya Input Method',
                                  language='ja',
                                  license='MIT',
                                  author='Hashimoto Masahiko',
-                                 icon='ibus-egoisticlily',
+                                 icon='ibus-anya',
                                  layout='jp',
                                  symbol='E',
                                  rank=99)
@@ -81,7 +81,7 @@ class IMApp:
         if exec_by_ibus:
             # debug
             print("exec_by_ibus request_name")
-            self.__bus.request_name('org.freedesktop.IBus.EgoisticLily', 0)
+            self.__bus.request_name('org.freedesktop.IBus.Anya', 0)
         else:
             # debug
             print("not exec_by_ibus register_component")
@@ -111,10 +111,10 @@ def get_userhome():
     return userhome
 
 def resync_engine_file():
-    user_config = "@PACKAGE_DIR@/config/egoisticlily/engines.xml"
-    #　path.join(get_userhome(), '.config',　'ibus-egoisticlily', 'engines.xml')
-    system_config = "@PACKAGE_DIR@/config/egoisticlily/default.xml"
-    # path.join('/home/cream/.config', 'ibus-egoisticlily', 'default.xml')
+    user_config = "@PACKAGE_DIR@/config/anya/engines.xml"
+    #　path.join(get_userhome(), '.config',　'ibus-anya', 'engines.xml')
+    system_config = "@PACKAGE_DIR@/config/anya/default.xml"
+    # path.join('/home/cream/.config', 'ibus-anya', 'default.xml')
     if not path.exists(user_config):
         return
     if not path.exists(system_config):
@@ -142,10 +142,10 @@ def resync_engine_file():
         shutil.copyfile(system_config, user_config)
 
 def print_xml():
-    user_config = "@PACKAGE_DIR@/config/egoisticlily/engines.xml"
-    #　path.join(get_userhome(), '.config',　'ibus-egoisticlily', 'engines.xml')
-    system_config = "@PACKAGE_DIR@/config/egoisticlily/default.xml"
-    # path.join('/home/cream/.config', 'ibus-egoisticlily', 'default.xml')
+    user_config = "@PACKAGE_DIR@/config/anya/engines.xml"
+    #　path.join(get_userhome(), '.config',　'ibus-anya', 'engines.xml')
+    system_config = "@PACKAGE_DIR@/config/anya/default.xml"
+    # path.join('/home/cream/.config', 'ibus-anya', 'default.xml')
     xml = None
     for f in [user_config, system_config]:
         if os.path.exists(f):

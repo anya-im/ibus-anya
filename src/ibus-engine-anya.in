@@ -1,7 +1,7 @@
 #!/bin/sh
 # vim:set et sts=4 sw=4:
 #
-# ibus-egoisticlily - The EgoisticLily engine for IBus
+# ibus-anya - The Anya engine for IBus
 #
 # Copyright (c) 2019 Syuta Hashimoto <syuta.hashimoto@gmail.com>
 #

@@ -1,20 +1,20 @@
 <?xml version="1.0" encoding="utf-8"?>
 <engines>
 	<engine>
-		<name>egoisticlily</name>
+		<name>anya</name>
 		<language>ja</language>
 		<license>MIT</license>
 		<author>Hashimoto Masahiko</author>
-		<icon>ibus-egoisticlily</icon>
+		<icon>ibus-anya</icon>
 		<layout>jp</layout>
 		<layout_variant></layout_variant>
 		<layout_option></layout_option>
-		<longname translatable="no">EgoisticLily</longname>
-		<description>EgoisticLily Input Method</description>
+		<longname translatable="no">Anya</longname>
+		<description>Anya Input Method</description>
 		<rank>99</rank>
 		<symbol>&#x3042;</symbol>
 		<icon_prop_key>InputMode</icon_prop_key>
 		<version>0.0.1</version>
-		<textdomain>ibus-egoisticlily</textdomain>
+		<textdomain>ibus-anya</textdomain>
 	</engine>
 </engines>

@@ -1,4 +1,4 @@
-schemas_DATA = org.freedesktop.ibus.engine.egoisticlily.gschema.xml
+schemas_DATA = org.freedesktop.ibus.engine.anya.gschema.xml
 schemasdir = $(datadir)/glib-2.0/schemas
 
 $(schemas_DATA):

@@ -1,7 +1,7 @@
 # -*- coding: utf-8 -*-
 # vim:set et sts=4 sw=4:
 #
-# ibus-egoisticlily - The EgoisticLily engine for IBus
+# ibus-anya - The Anya engine for IBus
 #
 # Copyright (c) 2019 Syuta Hashimoto <syuta.hashimoto@gmail.com>
 #
@@ -105,7 +105,7 @@ class Prefs(GObject.GObject):
         super(Prefs, self).__init__()
         self.__cache = {}
         self.__settings = {}
-        self.__schema_prefix = 'org.freedesktop.ibus.engine.egoisticlily.'
+        self.__schema_prefix = 'org.freedesktop.ibus.engine.anya.'
         self.__schema_sections = ['common',
                                   'shortcut',
                                   'romaji-typing-rule',

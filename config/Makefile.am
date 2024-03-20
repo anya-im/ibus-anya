@@ -1,2 +1,2 @@
-SUBDIRS=egoisticlily gschema ibusengines
+SUBDIRS=anya gschema ibusengines
 

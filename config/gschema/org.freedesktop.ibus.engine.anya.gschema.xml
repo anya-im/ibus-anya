@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <schemalist>
-  <schema path="/org/freedesktop/ibus/engine/egoisticlily/common/"
-          id="org.freedesktop.ibus.engine.egoisticlily.common">
+  <schema path="/org/freedesktop/ibus/engine/anya/common/"
+          id="org.freedesktop.ibus.engine.anya.common">
     <key name="input-mode" type="i">
       <default>3</default>
       <summary>Input Mode</summary>
@@ -138,8 +138,8 @@
       <description></description>
     </key>
   </schema>
-  <schema path="/org/freedesktop/ibus/engine/egoisticlily/romaji-typing-rule/"
-          id="org.freedesktop.ibus.engine.egoisticlily.romaji-typing-rule">
+  <schema path="/org/freedesktop/ibus/engine/anya/romaji-typing-rule/"
+          id="org.freedesktop.ibus.engine.anya.romaji-typing-rule">
     <key name="method" type="s">
       <default>'default'</default>
       <summary>Method</summary>
@@ -154,7 +154,7 @@
       ##2 Gairaigo http://ja.wikipedia.org/wiki/%E5%A4%96%E6%9D%A5%E8%AA%9E
       ##3 ANSI/BSI Suggestions http://en.wikipedia.org/wiki/Katakana
       ##4 Historical kana http://en.wikipedia.org/wiki/Romanization_of_Japanese
-      # Maybe we need a compatibility between MS-IME and ibus-egoisticlily.
+      # Maybe we need a compatibility between MS-IME and ibus-anya.
       -->
       <default>
         {
@@ -438,8 +438,8 @@
       <description></description>
     </key>
   </schema>
-  <schema path="/org/freedesktop/ibus/engine/egoisticlily/kana-typing-rule/"
-          id="org.freedesktop.ibus.engine.egoisticlily.kana-typing-rule">
+  <schema path="/org/freedesktop/ibus/engine/anya/kana-typing-rule/"
+          id="org.freedesktop.ibus.engine.anya.kana-typing-rule">
     <key name="method" type="s">
       <default>'jp'</default>
       <summary>Method</summary>
@@ -674,8 +674,8 @@
       <description></description>
     </key>
   </schema>
-  <schema path="/org/freedesktop/ibus/engine/egoisticlily/thumb/"
-          id="org.freedesktop.ibus.engine.egoisticlily.thumb">
+  <schema path="/org/freedesktop/ibus/engine/anya/thumb/"
+          id="org.freedesktop.ibus.engine.anya.thumb">
     <key name="keyboard-layout-mode" type="b">
       <default>true</default>
       <summary>Keyboard Layout Mode</summary>
@@ -717,8 +717,8 @@
       <description></description>
     </key>
   </schema>
-  <schema path="/org/freedesktop/ibus/engine/egoisticlily/thumb-typing-rule/"
-          id="org.freedesktop.ibus.engine.egoisticlily.thumb-typing-rule">
+  <schema path="/org/freedesktop/ibus/engine/anya/thumb-typing-rule/"
+          id="org.freedesktop.ibus.engine.anya.thumb-typing-rule">
     <key name="method" type="s">
       <default>'base'</default>
       <summary>Method</summary>
@@ -855,8 +855,8 @@
       <description></description>
     </key>
   </schema>
-  <schema path="/org/freedesktop/ibus/engine/egoisticlily/dict/"
-          id="org.freedesktop.ibus.engine.egoisticlily.dict">
+  <schema path="/org/freedesktop/ibus/engine/anya/dict/"
+          id="org.freedesktop.ibus.engine.anya.dict">
     <key name="template" type="v">
       <default>
         &lt;('template', '', '', '', false, 300, false, true, false, 'utf-8')&gt;
@@ -899,8 +899,8 @@
       <description></description>
     </key>
   </schema>
-  <schema path="/org/freedesktop/ibus/engine/egoisticlily/shortcut/"
-          id="org.freedesktop.ibus.engine.egoisticlily.shortcut">
+  <schema path="/org/freedesktop/ibus/engine/anya/shortcut/"
+          id="org.freedesktop.ibus.engine.anya.shortcut">
     <key name="default" type="a{sv}">
       <default>
         {

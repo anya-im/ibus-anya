@@ -1,7 +1,7 @@
 # -*- coding: utf-8 -*-
 # vim:set et sts=4 sw=4:
 #
-# ibus-egoisticlily - The EgoisticLily engine for IBus
+# ibus-anya - The Anya engine for IBus
 #
 # Copyright (c) 2019 Syuta Hashimoto <syuta.hashimoto@gmail.com>
 #
@@ -43,9 +43,9 @@ import engine
 
 
 class EngineFactory(IBus.Factory):
-    FACTORY_PATH = '/org/cddc/IBus/engines/EgoisticLily/Factory'
-    ENGINE_PATH = '/org/cddc/IBus/engines/EgoisticLily/Engine'
-    NAME = 'EgoisticLily'
+    FACTORY_PATH = '/org/cddc/IBus/engines/Anya/Factory'
+    ENGINE_PATH = '/org/cddc/IBus/engines/Anya/Engine'
+    NAME = 'Anya'
     LANG = 'ja'
     ICON = '@PACKAGE_DIR@/src/tool.png'
     AUTHORS = 'Syuta Hashimoto <syuta.hashimoto@gmail.com>'
@@ -73,8 +73,8 @@ class EngineFactory(IBus.Factory):
 
     def do_create_engine(self, engine_name):
         print("do_cerate_engine")
-        if engine_name == 'egoisticlily':
-            print("engine_name == 'egoisticlily'")
+        if engine_name == 'anya':
+            print("engine_name == 'anya'")
             self.__id += 1
             return engine.Engine(self.__bus, '%s/%d' % (self.ENGINE_PATH, self.__id))
 
